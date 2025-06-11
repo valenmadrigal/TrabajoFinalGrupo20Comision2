@@ -1,12 +1,12 @@
-# React + Vite
+INTEGRANTES GRUPO 20:
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Franco Arcibia Usuario Github :Franco-2023-20,
+Selene Espejo  Usuario Github :TaliaEspejo , 
+Valentina Madrigal  Usuario Github :valenmadrigal,  
+Franco Mamani  Usuario Github :francozxy
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Descripcion:
+aplicacion desarrollada con React + Vite, que permita implementar el manejo de estado 
+global mediante Context API o Redux, con el fin de centralizar y compartir el estado de la 
+aplicación entre diferentes componentes y páginas. 
+La aplicación gestiona datos de productos: crear, editar, eliminar y visualizar información detallada de cada producto.
