@@ -1,13 +1,14 @@
 import { useState } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
-import Login from './Login'
-import Home from './Home'
-
+import Login from './assets/components/Login'
+import Home from './pages/Home'
+import Navbar from './assets/components/Navbar'
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
 
   return (
     <Router>
+      <Navbar />
       <Routes>
         <Route
           path="/"
