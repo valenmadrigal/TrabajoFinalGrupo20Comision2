@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import './CSS/Login.css'
 
 function Login({ setIsAuthenticated }) {
   const [user, setUser] = useState('')
@@ -18,7 +19,8 @@ function Login({ setIsAuthenticated }) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="login-form">
+
       <h2>Login</h2>
       <input
         type="text"
@@ -37,4 +39,4 @@ function Login({ setIsAuthenticated }) {
   )
 }
 
-export default Login
+export default Login;
