@@ -19,7 +19,7 @@ const productos = [
     descripcion: 'Descripción del producto 2.',
     categoria: 'Hogar',
   },
-   {
+  {
     id: 3,
     imagen: '',
     nombre: 'Producto 3',
@@ -31,11 +31,13 @@ const productos = [
 
 function Home() {
   return (
-    <div className="container mt-4">
-      <h1 className="mb-4">Listado de Productos</h1>
-      <div className="d-flex flex-wrap justify-content-start">
+    <div className="container mt-5">
+      <h1 className="text-center mb-5 text-primary fw-bold">Listado de Productos</h1>
+      <div className="row g-4">
         {productos.map((p) => (
-          <ProductCard key={p.id} producto={p} />
+          <div className="col-12 col-sm-6 col-md-4" key={p.id}>
+            <ProductCard producto={p} />
+          </div>
         ))}
       </div>
     </div>

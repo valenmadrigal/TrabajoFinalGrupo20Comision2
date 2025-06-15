@@ -1,12 +1,14 @@
-
-/* Ajuste para las imágenes en las tarjetas */
-.card-img-top {
-  height: 200px;
-  object-fit: cover;
+/* Home.css */
+h1 {
+  font-family: 'Segoe UI', sans-serif;
+  letter-spacing: 1px;
 }
 
-/* Cambiar color del checkbox si está marcado */
-.form-check-input:checked {
-  background-color: #0d6efd;
-  border-color: #0d6efd;
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
