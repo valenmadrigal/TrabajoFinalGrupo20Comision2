@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import './CSS/Login.css'
+import '../CSS/Login.css'
 
 function Login({ setIsAuthenticated }) {
   const [user, setUser] = useState('')
