@@ -1,32 +1,20 @@
 // src/pages/ProductDetail.jsx
-import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { useProducts } from '../context/ProductsContext.js'; // Contexto de productos
-import { useFavorites } from '../context/FavoritesContext.js'; // Contexto de favoritos
+import React from 'react';
+import { useParams, Link, useNavigate } from 'react-router-dom'; // Para obtener el ID y navegar
+import { useProducts } from '../hooks/ProductsContext.js'; // Para obtener el producto
+import { useFavorites } from '../hooks/FavoritesContext.js'; // Para gestionar favoritos
 
 function ProductDetail() {
   const { id } = useParams(); // Obtiene el ID del producto de la URL
-  const { getProductById, loading, error } = useProducts(); // Consume el contexto de productos
-  const { addFavorite, removeFavorite, isFavorite } = useFavorites(); // Consume el contexto de favoritos
+  const { getProductById, loading, error } = useProducts(); // Obtiene la función para buscar productos
+  const { favoriteIds, toggleFavorite } = useFavorites(); // Obtiene los IDs favoritos y la función para alternar
+  const navigate = useNavigate(); // Para volver a la página anterior
 
-  const [product, setProduct] = useState(null);
+  const product = getProductById(id); // Busca el producto por ID
+  const isFavorite = product ? favoriteIds.includes(product.id) : false; // Verifica si es favorito
 
-useEffect(() => {
-  if (!loading && !error) {
-    setProduct(getProductById(id));
-  }
-}, [loading, error, id, getProductById]); // Busca el producto por ID en el estado global
-  const favorite = product ? isFavorite(product.id) : false;
-
-  const handleToggleFavorite = () => {
-    if (product) {
-      if (favorite) {
-        removeFavorite(product.id);
-      } else {
-        addFavorite(product.id);
-      }
-    }
-  };
+  // Simulación de stock (ya que la API no lo provee)
+  const simulatedStock = 10;
 
   if (loading) {
     return <p style={{ textAlign: 'center', marginTop: '50px', fontSize: '1.2em' }}>Cargando detalles del producto...</p>;
@@ -40,70 +28,94 @@ useEffect(() => {
     return <p style={{ textAlign: 'center', marginTop: '50px', fontSize: '1.2em' }}>Producto no encontrado.</p>;
   }
 
+  const handleToggleFavorite = () => {
+    toggleFavorite(product.id);
+  };
+
   return (
-    <div style={{
-      maxWidth: '800px',
-      margin: '40px auto',
-      padding: '30px',
-      border: '1px solid #eee',
-      borderRadius: '10px',
-      boxShadow: '0 8px 16px rgba(0,0,0,0.1)',
-      backgroundColor: 'white',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center'
-    }}>
-      <img src={product.image} alt={product.title} style={{ maxWidth: '300px', height: 'auto', objectFit: 'contain', marginBottom: '20px' }} />
-      <h1 style={{ fontSize: '2em', marginBottom: '10px', textAlign: 'center', color: '#333' }}>{product.title}</h1>
-      <p style={{ fontSize: '1.5em', fontWeight: 'bold', color: '#007bff', marginBottom: '20px' }}>${product.price.toFixed(2)}</p>
-      <p style={{ fontSize: '1.1em', lineHeight: '1.6', textAlign: 'justify', marginBottom: '20px' }}>
-        <strong>Descripción:</strong> {product.description}
-      </p>
-      <p style={{ fontSize: '1.1em', marginBottom: '10px' }}>
-        <strong>Categoría:</strong> {product.category}
-      </p>
-      {/* FakeStoreAPI no tiene 'stock', así que lo simulamos o lo omitimos */}
-      <p style={{ fontSize: '1.1em', marginBottom: '20px' }}>
-        <strong>Stock:</strong> Disponible (simulado)
-      </p>
-      <div style={{ display: 'flex', gap: '15px' }}>
-        <button
-          onClick={handleToggleFavorite}
+    <div style={{ padding: '20px', maxWidth: '800px', margin: '50px auto', border: '1px solid #e0e0e0', borderRadius: '10px', boxShadow: '0 6px 12px rgba(0,0,0,0.15)', backgroundColor: '#fff', display: 'flex', flexDirection: 'column' }}>
+      <button
+        onClick={() => navigate(-1)} // Vuelve a la página anterior
+        style={{
+          alignSelf: 'flex-start',
+          backgroundColor: '#6c757d',
+          color: 'white',
+          border: 'none',
+          padding: '10px 15px',
+          borderRadius: '5px',
+          cursor: 'pointer',
+          marginBottom: '20px',
+          transition: 'background-color 0.2s ease'
+        }}
+        onMouseOver={(e) => e.target.style.backgroundColor = '#5a6268'}
+        onMouseOut={(e) => e.target.style.backgroundColor = '#6c757d'}
+      >
+        ← Volver
+      </button>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '300px', overflow: 'hidden', borderRadius: '8px', backgroundColor: '#f5f5f5' }}>
+          <img
+            src={product.image}
+            alt={product.title}
+            style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', borderRadius: '8px' }}
+            onError={(e) => { e.target.onerror = null; e.target.src = "https://placehold.co/300x300/cccccc/333333?text=No+Image"; }} // Placeholder
+          />
+        </div>
+
+        <h1 style={{ fontSize: '2.2em', color: '#333', marginBottom: '10px', textAlign: 'center' }}>
+          {product.title}
+        </h1>
+
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
+          <p style={{ fontWeight: 'bold', fontSize: '1.8em', color: '#007bff' }}>
+            ${product.price ? product.price.toFixed(2) : 'N/A'}
+          </p>
+          <button
+            onClick={handleToggleFavorite}
+            style={{
+              background: 'none',
+              border: 'none',
+              fontSize: '2em',
+              cursor: 'pointer',
+              color: isFavorite ? '#ffc107' : '#ccc',
+              padding: '5px',
+              borderRadius: '50%',
+              transition: 'color 0.2s ease-in-out'
+            }}
+            aria-label={isFavorite ? "Quitar de favoritos" : "Añadir a favoritos"}
+          >
+            {isFavorite ? '★' : '☆'}
+          </button>
+        </div>
+
+        <p style={{ fontSize: '1.1em', color: '#555', lineHeight: '1.6', marginBottom: '20px' }}>
+          {product.description || 'Este producto no tiene una descripción detallada.'}
+        </p>
+
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '15px', fontSize: '1.05em', color: '#444' }}>
+          <p><strong>Categoría:</strong> {product.category || 'Sin categoría'}</p>
+          <p><strong>Stock Disponible:</strong> {simulatedStock}</p> {/* Stock simulado */}
+        </div>
+
+        {/* Opcional: Otros botones de acción, como "Añadir al carrito" */}
+        {/* <button
           style={{
-            background: favorite ? '#dc3545' : '#28a745',
+            backgroundColor: '#007bff',
             color: 'white',
             border: 'none',
-            padding: '10px 15px',
-            borderRadius: '5px',
+            padding: '15px 25px',
+            borderRadius: '8px',
             cursor: 'pointer',
-            fontSize: '1em',
-            transition: 'background-color 0.3s ease'
+            fontSize: '1.2em',
+            marginTop: '20px',
+            transition: 'background-color 0.2s ease'
           }}
+          onMouseOver={(e) => e.target.style.backgroundColor = '#0056b3'}
+          onMouseOut={(e) => e.target.style.backgroundColor = '#007bff'}
         >
-          {favorite ? '★ Quitar de Favoritos' : '☆ Añadir a Favoritos'}
-        </button>
-        <Link to={`/product/edit/${product.id}`} style={{
-          textDecoration: 'none',
-          background: '#ffc107',
-          color: '#333',
-          padding: '10px 15px',
-          borderRadius: '5px',
-          fontSize: '1em',
-          transition: 'background-color 0.3s ease'
-        }}>
-          Editar Producto
-        </Link>
-        <Link to="/" style={{
-          textDecoration: 'none',
-          background: '#6c757d',
-          color: 'white',
-          padding: '10px 15px',
-          borderRadius: '5px',
-          fontSize: '1em',
-          transition: 'background-color 0.3s ease'
-        }}>
-          Volver al Inicio
-        </Link>
+          Añadir al Carrito
+        </button> */}
       </div>
     </div>
   );

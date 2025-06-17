@@ -1,16 +1,6 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-
-// Crear el contexto
-export const ProductsContext = createContext();
-
-// Hook personalizado para acceder al contexto
-export const useProducts = () => {
-  const context = useContext(ProductsContext);
-  if (!context) {
-    throw new Error('useProducts debe usarse dentro de ProductsProvider');
-  }
-  return context;
-};
+// context/ProductsProvider.jsx
+import React, { useEffect, useState } from 'react';
+import { ProductsContext } from '../hooks/ProductsContext'; // Importa el contexto
 
 // Proveedor del contexto
 export const ProductsProvider = ({ children }) => {
@@ -18,6 +8,7 @@ export const ProductsProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Lógica para cargar productos al montar el componente
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
@@ -35,15 +26,17 @@ export const ProductsProvider = ({ children }) => {
       }
     };
     fetchProducts();
-  }, []);
+  }, []); // El array vacío asegura que se ejecute solo una vez al montar
 
+  // Funciones CRUD (Create, Read, Update, Delete) para manipular los productos
   const getProductById = (id) => products.find((p) => p.id === parseInt(id));
 
   const addProduct = (newProduct) => {
+    // Genera un nuevo ID basado en el ID más alto existente
     const newId = Math.max(0, ...products.map((p) => p.id)) + 1;
     const productWithId = { ...newProduct, id: newId };
     setProducts((prev) => [...prev, productWithId]);
-    return productWithId;
+    return productWithId; // Retorna el producto añadido con su nuevo ID
   };
 
   const editProduct = (updatedProduct) => {
@@ -56,18 +49,19 @@ export const ProductsProvider = ({ children }) => {
     setProducts((prev) => prev.filter((p) => p.id !== id));
   };
 
+  // El valor que se proveerá a todos los componentes que consuman este contexto
+  const contextValue = {
+    products,
+    loading,
+    error,
+    getProductById,
+    addProduct,
+    editProduct,
+    deleteProduct,
+  };
+
   return (
-    <ProductsContext.Provider
-      value={{
-        products,
-        loading,
-        error,
-        getProductById,
-        addProduct,
-        editProduct,
-        deleteProduct,
-      }}
-    >
+    <ProductsContext.Provider value={contextValue}>
       {children}
     </ProductsContext.Provider>
   );

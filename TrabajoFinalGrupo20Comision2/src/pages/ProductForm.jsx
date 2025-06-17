@@ -1,7 +1,7 @@
 // src/pages/ProductForm.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useProducts } from '../context/ProductsContext.js'; // Contexto de productos
+import { useProducts } from '../hooks/ProductsContext.js'; // Contexto de productos
 
 function ProductForm() {
   const { id } = useParams(); // Obtiene el ID si estamos en modo edición
