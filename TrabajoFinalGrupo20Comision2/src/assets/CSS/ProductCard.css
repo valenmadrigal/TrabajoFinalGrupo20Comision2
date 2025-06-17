@@ -1,116 +1,112 @@
 .product-card {
   position: relative;
-  overflow: hidden; /* Para que el brillo no salga de la tarjeta */
-  border-radius: 16px;
-  border: 1px solid #dee2e6;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  cursor: pointer;
-}
-
-/* Hover: eleva, escala y sombra */
-.product-card:hover {
-  transform: translateY(-8px) scale(1.03);
-  box-shadow: 0 20px 35px rgba(0, 0, 0, 0.18);
-}
-
-/* Brillo animado con pseudo-elemento */
-.product-card::before {
-  content: "";
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(
-    120deg,
-    rgba(49, 63, 251, 0.859) 30%,
-    rgba(198, 82, 248, 0.957) 50%,
-    rgba(152, 68, 254, 0.897) 70%
-  );
-  transform: rotate(25deg);
-  transition: all 0.7s ease;
-  pointer-events: none;
-  opacity: 0;
-  z-index: 0; /* Debajo del contenido */
-  border-radius: 16px; /* Igual que la tarjeta */
-}
-
-/* Al pasar mouse aparece el brillo y se mueve */
-.product-card:hover::before {
-  opacity: 1;
-  left: 100%;
-}
-
-/* Para que el contenido quede encima del brillo */
-.product-card > * {
-  position: relative;
-  z-index: 1;
-}
-
-/* Imagen del producto */
-.product-img {
-  height: 200px;
-  object-fit: cover;
-  border-bottom: 1px solid #e9ecef;
-  border-radius: 16px 16px 0 0; /* Bordes superiores redondeados */
-}
-
-/* Estilo para categoría */
-.product-category .badge {
-  font-size: 0.8rem;
-  padding: 0.4em 0.7em;
-  background: linear-gradient(135deg, #d19af1, #a1c6fd);
+  width: 100%;
+  max-width: 280px;
+  min-height: 420px;
+  padding: 1rem;
   border-radius: 12px;
-  font-weight: 500;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ddd;
+  background-color: #fff;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: box-shadow 0.3s ease;
+  animation: fadeInUp 0.6s ease both;
 }
 
-/* Botón "Ver más" */
-.btn-ver-mas {
-  font-size: 0.9rem;
-  background-color: #365cf5;
-  border: none;
-  color: white;
-  padding: 0.5rem 1.2rem;
-  border-radius: 8px;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.btn-ver-mas:hover {
-  background-color: #1c3ded;
-  transform: scale(1.05);
-  box-shadow: 0 50px 60px rgba(28, 118, 237, 0.775);
-}
-
-/* Checkbox */
-.form-check-input {
+.product-card:hover {
+   box-shadow: 0 0 15px rgba(8, 60, 248, 0.5), 0 20px 40px rgba(24, 162, 242, 0.4);
+  border: 2px solid #083cf8;
   cursor: pointer;
+}
+/* Imagen */
+.product-image {
+  width: 100%;
+  height: 180px;
+  object-fit: contain;
+  border-radius: 6px;
+}
+
+/* Estrella de favorito */
+.favorite-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.8em;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  transition: transform 0.2s, color 0.2s;
+}
+
+.favorite-button:hover {
   transform: scale(1.2);
 }
 
-/* Animación fade-in para la tarjeta */
+.favorite-true {
+  color: #ffc107;
+}
+
+.favorite-false {
+  color: #bbb;
+}
+
+/* Título del producto */
+.product-title {
+  font-size: 1.3em;
+  text-align: center;
+  color: #222;
+  margin: 12px 0;
+  font-weight: bold;
+  min-height: 3em;
+  line-height: 1.3;
+}
+
+/* Botón de detalles */
+.detail-button {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  background-color: #28a745;
+  color: white;
+  text-align: center;
+  border-radius: 6px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.2s;
+}
+
+.detail-button:hover {
+  background-color: #218838;
+  transform: scale(1.02);
+}
+/* Aparezca suavemente al cargar: */
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(30px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
-
-.fade-in {
-  animation: fadeInUp 0.6s ease forwards;
+.favorite-button.animate {
+  animation: pop 0.3s ease-in-out;
 }
 
-/* Icono rotando en botón */
-.btn-ver-mas:hover .me-1 {
-  animation: rotateIcon 0.5s ease;
+@keyframes pop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
-@keyframes rotateIcon {
-  0% { transform: rotate(0deg); }
-  50% { transform: rotate(15deg); }
-  100% { transform: rotate(0deg); }
-}
