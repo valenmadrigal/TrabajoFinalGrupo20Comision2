@@ -1,182 +1,211 @@
 // src/pages/ProductForm.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useProducts } from '../hooks/ProductsContext.js'; // Contexto de productos
+import { useProducts } from '../hooks/ProductsContext'; // Para acceder a productos y funciones CRUD
 
 function ProductForm() {
-  const { id } = useParams(); // Obtiene el ID si estamos en modo edición
-  const navigate = useNavigate();
-  const { getProductById, addProduct, editProduct } = useProducts(); // Funciones del contexto
+  const { id } = useParams(); // Obtiene el ID de la URL si estamos en modo edición
+  const navigate = useNavigate(); // Para redirigir después de guardar
+  const { products, getProductById, addProduct, editProduct } = useProducts();
 
-  const [title, setTitle] = useState('');
-  const [price, setPrice] = useState('');
-  const [description, setDescription] = useState('');
-  const [category, setCategory] = useState('');
-  const [image, setImage] = useState('');
-  const [ratingRate, setRatingRate] = useState(''); // FakeStoreAPI tiene rating.rate
-  const [ratingCount, setRatingCount] = useState(''); // FakeStoreAPI tiene rating.count
+  // Estado local para los campos del formulario
+  const [formData, setFormData] = useState({
+    title: '',
+    price: '',
+    description: '',
+    category: '',
+    image: '',
+  });
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [formError, setFormError] = useState(null); // Para errores específicos del formulario
 
-  const isEditing = Boolean(id); // Determina si estamos editando o creando
-
-  // Carga los datos del producto si estamos editando
+  // useEffect para precargar datos si estamos en modo edición
   useEffect(() => {
-    if (isEditing) {
+    if (id) { // Si hay un ID en la URL, estamos en modo edición
+      setIsEditMode(true);
       const productToEdit = getProductById(id);
       if (productToEdit) {
-        setTitle(productToEdit.title || '');
-        setPrice(productToEdit.price || '');
-        setDescription(productToEdit.description || '');
-        setCategory(productToEdit.category || '');
-        setImage(productToEdit.image || '');
-        // Asegúrate de que las propiedades anidadas existan antes de acceder
-        setRatingRate(productToEdit.rating?.rate || '');
-        setRatingCount(productToEdit.rating?.count || '');
+        setFormData({
+          title: productToEdit.title || '',
+          price: productToEdit.price || '',
+          description: productToEdit.description || '',
+          category: productToEdit.category || '',
+          image: productToEdit.image || '',
+        });
       } else {
-        // Si el producto no se encuentra, redirige a la página principal
-        alert('Producto no encontrado para editar.');
-        navigate('/');
+        // Producto no encontrado, podrías redirigir o mostrar un error
+        setFormError('Producto no encontrado para editar.');
       }
+    } else {
+      // No hay ID, estamos en modo creación, asegurar que el formulario esté limpio
+      setIsEditMode(false);
+      setFormData({
+        title: '',
+        price: '',
+        description: '',
+        category: '',
+        image: '',
+      });
     }
-  }, [id, isEditing, getProductById, navigate]);
+    setFormError(null); // Limpiar errores al cambiar de modo
+  }, [id, getProductById, products]); // Dependencias: id, y las funciones/estados del contexto
 
-  const handleSubmit = (e) => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setFormError(null);
 
-    // Validaciones básicas
-    if (!title || !price || !description || !category || !image) {
-      alert('Por favor, completa todos los campos obligatorios.');
+    // Validación básica
+    if (!formData.title || !formData.price || !formData.description || !formData.category || !formData.image) {
+      setFormError('Todos los campos son obligatorios.');
+      return;
+    }
+    if (isNaN(parseFloat(formData.price)) || parseFloat(formData.price) <= 0) {
+      setFormError('El precio debe ser un número válido mayor que cero.');
       return;
     }
 
+    // Prepara el objeto producto con el tipo de dato correcto para el precio
     const productData = {
-      title,
-      price: parseFloat(price),
-      description,
-      category,
-      image,
-      // Incluye rating si lo tienes, o un valor por defecto
-      rating: {
-        rate: parseFloat(ratingRate) || 0,
-        count: parseInt(ratingCount) || 0
-      }
+      ...formData,
+      price: parseFloat(formData.price),
     };
 
-    if (isEditing) {
-      // Si estamos editando, incluimos el ID del producto
-      editProduct({ ...productData, id: parseInt(id) });
-      alert('Producto actualizado con éxito!');
-    } else {
-      addProduct(productData);
-      alert('Producto creado con éxito!');
+    try {
+      if (isEditMode) {
+        // En modo edición, añadimos el ID al objeto del producto
+        await editProduct({ ...productData, id: parseInt(id) });
+        alert('Producto actualizado con éxito!');
+      } else {
+        await addProduct(productData);
+        alert('Producto creado con éxito!');
+      }
+      navigate('/products'); // Redirige a la página de productos (Home)
+    } catch (error) {
+      // Manejar errores de las funciones addProduct/editProduct si fueran asíncronas
+      console.error('Error al guardar el producto:', error);
+      setFormError(`Error al guardar el producto: ${error.message || 'Error desconocido'}`);
     }
-    navigate('/'); // Redirige a la página principal después de guardar
   };
 
   return (
-    <div style={{ maxWidth: '600px', margin: '40px auto', padding: '30px', border: '1px solid #eee', borderRadius: '10px', boxShadow: '0 8px 16px rgba(0,0,0,0.1)', backgroundColor: 'white' }}>
-      <h1 style={{ textAlign: 'center', marginBottom: '25px', color: '#333' }}>
-        {isEditing ? 'Editar Producto' : 'Crear Nuevo Producto'}
+    <div style={{ maxWidth: '600px', margin: '50px auto', padding: '30px', border: '1px solid #ddd', borderRadius: '8px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}>
+      <h1 style={{ textAlign: 'center', marginBottom: '30px', color: '#333' }}>
+        {isEditMode ? 'Editar Producto' : 'Crear Nuevo Producto'}
       </h1>
+
+      {formError && (
+        <div style={{ color: 'red', marginBottom: '15px', textAlign: 'center' }}>
+          {formError}
+        </div>
+      )}
+
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
         <div>
-          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Título:</label>
+          <label htmlFor="title" style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Título:</label>
           <input
             type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            id="title"
+            name="title"
+            value={formData.title}
+            onChange={handleChange}
+            style={{ width: '100%', padding: '10px', border: '1px solid #ccc', borderRadius: '4px' }}
             required
-            style={{ width: 'calc(100% - 20px)', padding: '10px', borderRadius: '5px', border: '1px solid #ddd' }}
           />
         </div>
         <div>
-          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Precio:</label>
+          <label htmlFor="price" style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Precio:</label>
           <input
             type="number"
+            id="price"
+            name="price"
+            value={formData.price}
+            onChange={handleChange}
             step="0.01"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
+            style={{ width: '100%', padding: '10px', border: '1px solid #ccc', borderRadius: '4px' }}
             required
-            style={{ width: 'calc(100% - 20px)', padding: '10px', borderRadius: '5px', border: '1px solid #ddd' }}
           />
         </div>
         <div>
-          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Descripción:</label>
+          <label htmlFor="description" style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Descripción:</label>
           <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            id="description"
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            rows="5"
+            style={{ width: '100%', padding: '10px', border: '1px solid #ccc', borderRadius: '4px', resize: 'vertical' }}
             required
-            rows="4"
-            style={{ width: 'calc(100% - 20px)', padding: '10px', borderRadius: '5px', border: '1px solid #ddd', resize: 'vertical' }}
           ></textarea>
         </div>
         <div>
-          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Categoría:</label>
+          <label htmlFor="category" style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Categoría:</label>
           <input
             type="text"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
+            id="category"
+            name="category"
+            value={formData.category}
+            onChange={handleChange}
+            style={{ width: '100%', padding: '10px', border: '1px solid #ccc', borderRadius: '4px' }}
             required
-            style={{ width: 'calc(100% - 20px)', padding: '10px', borderRadius: '5px', border: '1px solid #ddd' }}
           />
         </div>
         <div>
-          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>URL de Imagen:</label>
+          <label htmlFor="image" style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>URL de Imagen:</label>
           <input
-            type="url"
-            value={image}
-            onChange={(e) => setImage(e.target.value)}
+            type="url" // Usar type="url" para validación básica de URL
+            id="image"
+            name="image"
+            value={formData.image}
+            onChange={handleChange}
+            style={{ width: '100%', padding: '10px', border: '1px solid #ccc', borderRadius: '4px' }}
             required
-            style={{ width: 'calc(100% - 20px)', padding: '10px', borderRadius: '5px', border: '1px solid #ddd' }}
-          />
-        </div>
-        <div>
-          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Rating (valor):</label>
-          <input
-            type="number"
-            step="0.1"
-            value={ratingRate}
-            onChange={(e) => setRatingRate(e.target.value)}
-            style={{ width: 'calc(100% - 20px)', padding: '10px', borderRadius: '5px', border: '1px solid #ddd' }}
-          />
-        </div>
-        <div>
-          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Rating (conteo):</label>
-          <input
-            type="number"
-            value={ratingCount}
-            onChange={(e) => setRatingCount(e.target.value)}
-            style={{ width: 'calc(100% - 20px)', padding: '10px', borderRadius: '5px', border: '1px solid #ddd' }}
           />
         </div>
         <button
           type="submit"
           style={{
+            backgroundColor: '#007bff',
+            color: 'white',
             padding: '12px 20px',
-            background: isEditing ? '#ffc107' : '#007bff',
-            color: isEditing ? '#333' : 'white',
             border: 'none',
             borderRadius: '5px',
             cursor: 'pointer',
             fontSize: '1.1em',
             marginTop: '20px',
-            transition: 'background-color 0.3s ease'
+            transition: 'background-color 0.2s ease'
           }}
+          onMouseOver={(e) => e.target.style.backgroundColor = '#0056b3'}
+          onMouseOut={(e) => e.target.style.backgroundColor = '#007bff'}
         >
-          {isEditing ? 'Guardar Cambios' : 'Crear Producto'}
+          {isEditMode ? 'Actualizar Producto' : 'Crear Producto'}
         </button>
-        <Link to="/" style={{
-          display: 'block',
-          textAlign: 'center',
-          marginTop: '10px',
-          textDecoration: 'none',
-          color: '#6c757d',
-          padding: '10px 15px',
-          border: '1px solid #6c757d',
-          borderRadius: '5px',
-          transition: 'background-color 0.3s ease, color 0.3s ease'
-        }}>
+        <button
+          type="button"
+          onClick={() => navigate(-1)}
+          style={{
+            backgroundColor: '#6c757d',
+            color: 'white',
+            padding: '12px 20px',
+            border: 'none',
+            borderRadius: '5px',
+            cursor: 'pointer',
+            fontSize: '1.1em',
+            marginTop: '10px',
+            transition: 'background-color 0.2s ease'
+          }}
+          onMouseOver={(e) => e.target.style.backgroundColor = '#5a6268'}
+          onMouseOut={(e) => e.target.style.backgroundColor = '#6c757d'}
+        >
           Cancelar
-        </Link>
+        </button>
       </form>
     </div>
   );
