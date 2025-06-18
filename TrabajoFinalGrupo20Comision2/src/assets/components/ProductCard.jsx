@@ -1,5 +1,4 @@
 // src/assets/components/ProductCard.jsx
-import React from 'react';
 import { Link } from 'react-router-dom'; // Necesario para el botón "Ver más detalles"
 import { useFavorites } from '../../hooks/FavoritesContext.js'; // Para el ícono de favoritos
 import '../CSS/ProductCard.css'; // un archivo CSS para estilos adicionales
