@@ -36,6 +36,7 @@ function LoginPage() {
           <input
             type="text"
             id="username"
+             placeholder="Ingrese su usuario"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ddd' }}
@@ -47,6 +48,7 @@ function LoginPage() {
           <input
             type="password"
             id="password"
+               placeholder="Ingrese su contraseña"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ddd' }}
