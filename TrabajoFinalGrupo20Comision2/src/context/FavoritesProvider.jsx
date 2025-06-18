@@ -1,5 +1,4 @@
-// context/FavoritesProvider.jsx
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { FavoritesContext } from '../hooks/FavoritesContext';
 
 // Clave para almacenar los IDs de favoritos en localStorage

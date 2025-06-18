@@ -1,5 +1,4 @@
-// context/ProductsProvider.jsx
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import { ProductsContext } from '../hooks/ProductsContext';
 
 // Proveedor del contexto
@@ -49,7 +48,7 @@ export const ProductsProvider = ({ children }) => {
     );
   };
 
-  // MODIFICADO: Esta función ahora realiza un borrado lógico
+//Borrado lógico
   const deleteProduct = (idToDelete) => {
     setProducts((prev) =>
       prev.map((p) =>
@@ -66,7 +65,7 @@ export const ProductsProvider = ({ children }) => {
     getProductById,
     addProduct,
     editProduct,
-    deleteProduct, // Esta función ahora hace borrado lógico
+    deleteProduct, //borrado lógico
   };
 
   return (

@@ -1,4 +1,3 @@
-// context/AuthContext.js
 import { createContext, useContext } from 'react';
 
 // Crear el contexto de autenticación

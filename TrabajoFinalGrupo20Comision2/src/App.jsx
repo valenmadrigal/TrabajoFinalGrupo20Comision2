@@ -1,15 +1,13 @@
-// App.jsx
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './hooks/AuthContext';
 
-// Importa tus páginas y componentes
+
 import Navbar from './assets/components/Navbar';
 import PrivateRoute from './assets/components/PrivateRoute';
 import Home from './pages/Home';
 import ProductDetail from './pages/ProductDetail';
 import FavoritesPage from './pages/FavoritesPage';
-import ProductForm from './pages/ProductForm'; // ¡Asegúrate de importar tu ProductForm!
+import ProductForm from './pages/ProductForm'; 
 import LoginPage from './pages/Login';
 
 function App() {

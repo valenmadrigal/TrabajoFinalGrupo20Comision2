@@ -1,5 +1,3 @@
-// src/pages/Home.jsx
-import React from 'react';
 import { useProducts } from '../hooks/ProductsContext.js'; // Contexto de productos
 import ProductCard from '../assets/components/ProductCard'; // Tarjeta de producto
 
@@ -14,10 +12,10 @@ function Home() {
     return <p style={{ textAlign: 'center', marginTop: '50px', color: 'red', fontSize: '1.2em' }}>Error: {error}</p>;
   }
 
-  // AÑADIR: Filtrar los productos para mostrar solo los que están activos
+  // Filtrar los productos para mostrar solo los que están activos
   const activeProducts = products.filter(product => product.isActive);
 
-  // AÑADIR: Mensaje si no hay productos activos después del filtro
+  // Mensaje si no hay productos activos después del filtro
   if (activeProducts.length === 0) {
     return <p style={{ textAlign: 'center', marginTop: '50px', fontSize: '1.2em' }}>No hay productos disponibles.</p>;
   }

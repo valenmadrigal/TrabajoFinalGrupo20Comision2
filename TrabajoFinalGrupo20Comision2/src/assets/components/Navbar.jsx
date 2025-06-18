@@ -1,5 +1,3 @@
-// src/components/Navbar.jsx (Modificado)
-import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/AuthContext';
 
@@ -37,9 +35,9 @@ function Navbar() {
               <Link className="nav-link" to="/products">Productos</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/favorites">Favoritos</Link>
+              <Link className="nav-link" to="/favoritos">Favoritos</Link>
             </li>
-            {/* AÑADIR: Enlace para crear producto */}
+          
             <li className="nav-item">
               <Link className="nav-link" to="/crear">Crear Producto</Link>
             </li>

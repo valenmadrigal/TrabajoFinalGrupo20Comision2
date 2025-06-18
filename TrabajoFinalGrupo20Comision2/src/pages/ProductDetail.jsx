@@ -1,5 +1,3 @@
-// src/pages/ProductDetail.jsx (Modificado)
-import React from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useProducts } from '../hooks/ProductsContext.js';
 import { useFavorites } from '../hooks/FavoritesContext.js';
@@ -78,7 +76,7 @@ function ProductDetail() {
           <p><strong>Stock Disponible:</strong> {simulatedStock}</p>
         </div>
 
-        {/* AÑADIR: Botón para editar el producto */}
+        {/* Botón para editar el producto */}
         <Link 
             to={`/editar/${product.id}`} 
             style={{ 

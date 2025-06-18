@@ -1,5 +1,4 @@
-// context/AuthProvider.jsx
-import React, { useState, useEffect } from 'react';
+import  { useState } from 'react';
 import { AuthContext } from '../hooks/AuthContext'; // Importa el contexto
 
 // Clave para almacenar la información del usuario en localStorage

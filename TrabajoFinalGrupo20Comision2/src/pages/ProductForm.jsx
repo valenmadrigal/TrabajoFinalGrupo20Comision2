@@ -1,5 +1,4 @@
-// src/pages/ProductForm.jsx
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useProducts } from '../hooks/ProductsContext'; // Para acceder a productos y funciones CRUD
 

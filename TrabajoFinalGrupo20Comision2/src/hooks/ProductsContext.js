@@ -1,4 +1,3 @@
-// context/ProductsContext.js
 import { createContext, useContext } from 'react';
 
 // Crear el contexto
