@@ -7,6 +7,7 @@
   background-color: #f0f2f5; /* Un gris muy claro, casi blanco, para el fondo de la página */
   border-radius: 12px; /* Bordes redondeados para el contenedor principal */
   box-shadow: 0 6px 12px rgba(248, 239, 239, 0.08); /* Sombra suave para un efecto de "elevación" */
+  font-size: 0.95em; /* **Letra un poco más chica para el contenido general de la página de inicio** */
 }
 
 .home-title {
