@@ -1,5 +1,4 @@
-// src/pages/LoginPage.jsx (Ejemplo)
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { useAuth } from '../hooks/AuthContext.js'; // Ajusta la ruta si es necesario
 import { useNavigate } from 'react-router-dom'; // Para redireccionar después del login
 

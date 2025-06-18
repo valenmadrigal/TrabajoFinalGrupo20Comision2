@@ -1,48 +1,43 @@
-// App.jsx
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { useAuth } from './hooks/AuthContext.js';
+import { useAuth } from './hooks/AuthContext';
 
-// Importa tus páginas y componentes
-// import NavBar from './components/NavBar'; // Asegúrate de descomentar esto si usas NavBar
+
+import Navbar from './assets/components/Navbar';
+import PrivateRoute from './assets/components/PrivateRoute';
 import Home from './pages/Home';
 import ProductDetail from './pages/ProductDetail';
 import FavoritesPage from './pages/FavoritesPage';
-import ProductForm from './pages/ProductForm';
+import ProductForm from './pages/ProductForm'; 
 import LoginPage from './pages/Login';
 
 function App() {
-  const { isAuthenticated } = useAuth(); // Obtén el estado de autenticación
+  const { isAuthenticated } = useAuth();
 
   return (
     <Router>
-      {/* Si tienes un componente NavBar, descoméntalo aquí */}
-      {/* <NavBar /> */}
+      <Navbar />
+
       <Routes>
-        {/*
-          Ruta principal:
-          Si el usuario está autenticado, muestra Home.
-          Si no está autenticado, muestra LoginPage.
-        */}
-        <Route
-          path="/"
-          element={isAuthenticated ? <Home /> : <LoginPage />}
+        <Route path="/" element={isAuthenticated ? <Home /> : <LoginPage />} />
+        
+        <Route 
+          path="/login" 
+          element={isAuthenticated ? <Navigate to="/" replace /> : <LoginPage />} 
         />
 
-        {/* Ruta para el detalle del producto */}
-        <Route path="/detalle/:id" element={<ProductDetail />} />
+        {/* --- Rutas Protegidas --- */}
+        <Route element={<PrivateRoute />}>
+          <Route path="/products" element={<Home />} />
+          <Route path="/detalle/:id" element={<ProductDetail />} />
+          <Route path="/favoritos" element={<FavoritesPage />} />
+          
+          {/* RUTA PARA CREAR UN NUEVO PRODUCTO */}
+          <Route path="/crear" element={<ProductForm />} />
+          
+          {/* RUTA PARA EDITAR UN PRODUCTO EXISTENTE (con ID) */}
+          <Route path="/editar/:id" element={<ProductForm />} />
+        </Route>
 
-        {/* Ruta para la página de favoritos */}
-        <Route path="/favoritos" element={<FavoritesPage />} />
-
-        {/* Rutas para crear y editar productos (puedes protegerlas si lo deseas) */}
-        <Route path="/crear" element={<ProductForm />} />
-        <Route path="/editar/:id" element={<ProductForm />} />
-
-        {/* Ya no necesitamos una ruta /login explícita, ya que la principal la gestiona */}
-        {/* <Route path="/login" element={<LoginPage />} /> */}
-
-        {/* Ruta fallback opcional para páginas no encontradas */}
         <Route path="*" element={<h2 style={{ padding: '2rem' }}>Página no encontrada</h2>} />
       </Routes>
     </Router>

@@ -1,5 +1,3 @@
-// src/pages/FavoritesPage.jsx
-import React from 'react';
 import { useProducts } from '../hooks/ProductsContext.js'; // Contexto de productos (para obtener todos los productos)
 import { useFavorites } from '../hooks/FavoritesContext.js'; // Contexto de favoritos (para obtener los IDs favoritos)
 import ProductCard from '../assets/components/ProductCard'; // Tarjeta de producto

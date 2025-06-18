@@ -1,9 +1,9 @@
-// context/ProductsProvider.jsx
-import React, { useEffect, useState } from 'react';
-import { ProductsContext } from '../hooks/ProductsContext'; // Importa el contexto
+import  { useEffect, useState } from 'react';
+import { ProductsContext } from '../hooks/ProductsContext';
 
 // Proveedor del contexto
 export const ProductsProvider = ({ children }) => {
+  // Inicializamos el estado con una función para añadir 'isActive: true' a cada producto.
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -17,7 +17,9 @@ export const ProductsProvider = ({ children }) => {
         const res = await fetch('https://fakestoreapi.com/products');
         if (!res.ok) throw new Error(`HTTP error: ${res.status}`);
         const data = await res.json();
-        setProducts(data);
+        // AÑADIR: Por defecto, todos los productos cargados estarán activos
+        const productsWithActiveStatus = data.map(p => ({ ...p, isActive: true }));
+        setProducts(productsWithActiveStatus);
       } catch (err) {
         setError('Error al cargar productos: ' + err.message);
         console.error(err);
@@ -26,17 +28,18 @@ export const ProductsProvider = ({ children }) => {
       }
     };
     fetchProducts();
-  }, []); // El array vacío asegura que se ejecute solo una vez al montar
+  }, []);
 
-  // Funciones CRUD (Create, Read, Update, Delete) para manipular los productos
+  // Funciones CRUD
   const getProductById = (id) => products.find((p) => p.id === parseInt(id));
 
   const addProduct = (newProduct) => {
     // Genera un nuevo ID basado en el ID más alto existente
     const newId = Math.max(0, ...products.map((p) => p.id)) + 1;
-    const productWithId = { ...newProduct, id: newId };
+    // AÑADIR: El nuevo producto también inicia como activo
+    const productWithId = { ...newProduct, id: newId, isActive: true };
     setProducts((prev) => [...prev, productWithId]);
-    return productWithId; // Retorna el producto añadido con su nuevo ID
+    return productWithId;
   };
 
   const editProduct = (updatedProduct) => {
@@ -45,8 +48,13 @@ export const ProductsProvider = ({ children }) => {
     );
   };
 
-  const deleteProduct = (id) => {
-    setProducts((prev) => prev.filter((p) => p.id !== id));
+//Borrado lógico
+  const deleteProduct = (idToDelete) => {
+    setProducts((prev) =>
+      prev.map((p) =>
+        p.id === idToDelete ? { ...p, isActive: false } : p
+      )
+    );
   };
 
   // El valor que se proveerá a todos los componentes que consuman este contexto
@@ -57,7 +65,7 @@ export const ProductsProvider = ({ children }) => {
     getProductById,
     addProduct,
     editProduct,
-    deleteProduct,
+    deleteProduct, //borrado lógico
   };
 
   return (

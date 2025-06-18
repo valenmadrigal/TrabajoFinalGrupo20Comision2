@@ -1,4 +1,3 @@
-// context/FavoritesContext.js
 import { createContext, useContext } from 'react';
 
 // Crear el contexto de Favoritos
