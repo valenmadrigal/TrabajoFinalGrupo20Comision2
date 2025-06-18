@@ -1,0 +1,26 @@
+/* Styles for ProductForm Page */
+.product-form-container {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px; /* Adjust container padding */
+}
+
+.product-form-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.product-form-title {
+  color: #333;
+}
+
+.save-button {
+  padding: 12px 20px;
+  font-size: 1.1em;
+}
+
+.cancel-button {
+  padding: 12px 20px;
+  font-size: 1.1em;
+}

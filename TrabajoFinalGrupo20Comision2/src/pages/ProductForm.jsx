@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useProducts } from '../hooks/ProductsContext'; // Para acceder a productos y funciones CRUD
+import { Container, Form, Button, Alert, Card } from 'react-bootstrap'; // Importaciones de React-Bootstrap
+import { FaSave, FaTimesCircle } from 'react-icons/fa'; // Iconos para guardar y cancelar
+import '../assets/CSS/Formulario.css'; // Importa el archivo CSS
 
 function ProductForm() {
   const { id } = useParams(); // Obtiene el ID de la URL si estamos en modo edición
@@ -95,118 +98,89 @@ function ProductForm() {
   };
 
   return (
-    <div style={{ maxWidth: '600px', margin: '50px auto', padding: '30px', border: '1px solid #ddd', borderRadius: '8px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}>
-      <h1 style={{ textAlign: 'center', marginBottom: '30px', color: '#333' }}>
-        {isEditMode ? 'Editar Producto' : 'Crear Nuevo Producto'}
-      </h1>
+    <Container className="product-form-container">
+      <Card className="product-form-card">
+        <Card.Body>
+          <Card.Title className="text-center mb-4 product-form-title">
+            {isEditMode ? 'Editar Producto' : 'Crear Nuevo Producto'}
+          </Card.Title>
 
-      {formError && (
-        <div style={{ color: 'red', marginBottom: '15px', textAlign: 'center' }}>
-          {formError}
-        </div>
-      )}
+          {formError && (
+            <Alert variant="danger" className="text-center mb-3">
+              {formError}
+            </Alert>
+          )}
 
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-        <div>
-          <label htmlFor="title" style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Título:</label>
-          <input
-            type="text"
-            id="title"
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-            style={{ width: '100%', padding: '10px', border: '1px solid #ccc', borderRadius: '4px' }}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="price" style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Precio:</label>
-          <input
-            type="number"
-            id="price"
-            name="price"
-            value={formData.price}
-            onChange={handleChange}
-            step="0.01"
-            style={{ width: '100%', padding: '10px', border: '1px solid #ccc', borderRadius: '4px' }}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="description" style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Descripción:</label>
-          <textarea
-            id="description"
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            rows="5"
-            style={{ width: '100%', padding: '10px', border: '1px solid #ccc', borderRadius: '4px', resize: 'vertical' }}
-            required
-          ></textarea>
-        </div>
-        <div>
-          <label htmlFor="category" style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Categoría:</label>
-          <input
-            type="text"
-            id="category"
-            name="category"
-            value={formData.category}
-            onChange={handleChange}
-            style={{ width: '100%', padding: '10px', border: '1px solid #ccc', borderRadius: '4px' }}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="image" style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>URL de Imagen:</label>
-          <input
-            type="url" // Usar type="url" para validación básica de URL
-            id="image"
-            name="image"
-            value={formData.image}
-            onChange={handleChange}
-            style={{ width: '100%', padding: '10px', border: '1px solid #ccc', borderRadius: '4px' }}
-            required
-          />
-        </div>
-        <button
-          type="submit"
-          style={{
-            backgroundColor: '#007bff',
-            color: 'white',
-            padding: '12px 20px',
-            border: 'none',
-            borderRadius: '5px',
-            cursor: 'pointer',
-            fontSize: '1.1em',
-            marginTop: '20px',
-            transition: 'background-color 0.2s ease'
-          }}
-          onMouseOver={(e) => e.target.style.backgroundColor = '#0056b3'}
-          onMouseOut={(e) => e.target.style.backgroundColor = '#007bff'}
-        >
-          {isEditMode ? 'Actualizar Producto' : 'Crear Producto'}
-        </button>
-        <button
-          type="button"
-          onClick={() => navigate(-1)}
-          style={{
-            backgroundColor: '#6c757d',
-            color: 'white',
-            padding: '12px 20px',
-            border: 'none',
-            borderRadius: '5px',
-            cursor: 'pointer',
-            fontSize: '1.1em',
-            marginTop: '10px',
-            transition: 'background-color 0.2s ease'
-          }}
-          onMouseOver={(e) => e.target.style.backgroundColor = '#5a6268'}
-          onMouseOut={(e) => e.target.style.backgroundColor = '#6c757d'}
-        >
-          Cancelar
-        </button>
-      </form>
-    </div>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group className="mb-3" controlId="title">
+              <Form.Label>Título:</Form.Label>
+              <Form.Control
+                type="text"
+                name="title"
+                value={formData.title}
+                onChange={handleChange}
+                required
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="price">
+              <Form.Label>Precio:</Form.Label>
+              <Form.Control
+                type="number"
+                name="price"
+                value={formData.price}
+                onChange={handleChange}
+                step="0.01"
+                required
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="description">
+              <Form.Label>Descripción:</Form.Label>
+              <Form.Control
+                as="textarea"
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+                rows={5}
+                required
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="category">
+              <Form.Label>Categoría:</Form.Label>
+              <Form.Control
+                type="text"
+                name="category"
+                value={formData.category}
+                onChange={handleChange}
+                required
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="image">
+              <Form.Label>URL de Imagen:</Form.Label>
+              <Form.Control
+                type="url"
+                name="image"
+                value={formData.image}
+                onChange={handleChange}
+                required
+              />
+            </Form.Group>
+
+            <div className="d-grid gap-2 mt-4">
+              <Button variant="primary" type="submit" className="save-button">
+                <FaSave className="me-2" /> {isEditMode ? 'Actualizar Producto' : 'Crear Producto'}
+              </Button>
+              <Button variant="secondary" type="button" onClick={() => navigate(-1)} className="cancel-button">
+                <FaTimesCircle className="me-2" /> Cancelar
+              </Button>
+            </div>
+          </Form>
+        </Card.Body>
+      </Card>
+    </Container>
   );
 }
 

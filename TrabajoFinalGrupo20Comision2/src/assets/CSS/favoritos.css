@@ -1,0 +1,33 @@
+/* Styles for FavoritesPage */
+.favorites-page-container {
+  padding: 20px;
+}
+
+.favorites-title {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.loading-message {
+  margin-top: 20px;
+  font-size: 1.2em;
+}
+
+.error-message {
+  margin-top: 50px;
+  font-size: 1.2em;
+}
+
+.no-favorites-message {
+  text-align: center;
+  margin-top: 50px;
+  font-size: 1.1em;
+  color: #666;
+}
+
+/* You might want to add styles for ProductCard within your ProductCard.css if it has its own styles */
+/* .product-card {
+  width: 100%;
+  max-width: 280px;
+} */

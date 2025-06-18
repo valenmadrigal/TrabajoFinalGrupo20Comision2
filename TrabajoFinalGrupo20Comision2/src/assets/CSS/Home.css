@@ -1,14 +1,30 @@
-/* Home.css */
-h1 {
-  font-family: 'Segoe UI', sans-serif;
-  letter-spacing: 1px;
+/* Styles for Home Page */
+.home-page-container {
+  padding: 20px;
 }
 
-.card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+.home-title {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
 }
 
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+.loading-message {
+  margin-top: 20px;
+  font-size: 1.2em;
 }
+
+.error-message {
+  margin-top: 50px;
+  font-size: 1.2em;
+}
+
+.no-products-message {
+  text-align: center;
+  margin-top: 50px;
+  font-size: 1.2em;
+  color: #666;
+}
+
+/* Ensure ProductCard styles are handled within ProductCard's own CSS,
+   or if needed, add specific overrides here */
