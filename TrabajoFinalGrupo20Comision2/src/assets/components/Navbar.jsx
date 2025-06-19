@@ -5,10 +5,13 @@ function Navbar() {
   const { isAuthenticated, user, logout } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
+const handleLogout = () => {
+  const confirmLogout = window.confirm(`¿Seguro que quieres cerrar sesión${user ? `, ${user.username}` : ''}?`);
+  if (confirmLogout) {
     logout();
     navigate('/login');
-  };
+  }
+};
 
   if (!isAuthenticated) {
     return null;
