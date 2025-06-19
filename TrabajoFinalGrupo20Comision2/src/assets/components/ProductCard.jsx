@@ -1,26 +1,30 @@
 import { Link } from 'react-router-dom';
 import { useFavorites } from '../../hooks/FavoritesContext.js';
 import { useProducts } from '../../hooks/ProductsContext.js';
-import '../CSS/ProductCard.css';
-
+import '../CSS/ProductCard.css'; // Asegurate de que esta ruta sea correcta
 
 function ProductCard({ product }) {
   const { favoriteIds, toggleFavorite } = useFavorites();
-  const { deleteProduct } = useProducts(); 
+  const { deleteProduct } = useProducts();
 
   const isFavorite = favoriteIds.includes(product.id);
 
   const handleToggleFavorite = (e) => {
-    e.stopPropagation();
+    e.stopPropagation(); // Evita que el click en el botón de favorito active el enlace de la tarjeta
     toggleFavorite(product.id);
   };
 
- 
   const handleDeleteProduct = (e) => {
-    e.stopPropagation(); 
-    if (window.confirm('¿Estás seguro de que quieres eliminar este producto?')) {
+    e.stopPropagation(); // Evita que el click en el botón de eliminar active el enlace de la tarjeta
+    if (window.confirm('¿Estás seguro de que querés eliminar este producto?')) {
       deleteProduct(product.id);
     }
+  };
+
+  // Función para manejar errores de carga de imagen
+  const handleImageError = (e) => {
+    e.target.onerror = null; // Evita bucles infinitos de error
+    e.target.src = "https://placehold.co/150x150/cccccc/333333?text=No+Image"; // Imagen de fallback
   };
 
   return (
@@ -29,10 +33,7 @@ function ProductCard({ product }) {
         src={product.image}
         alt={product.title}
         className="product-image"
-        onError={(e) => {
-          e.target.onerror = null;
-          e.target.src = "https://placehold.co/150x150/cccccc/333333?text=No+Image";
-        }}
+        onError={handleImageError} // Usa la función de manejo de errores
       />
 
       {/* Botón de Favorito */}
@@ -46,15 +47,14 @@ function ProductCard({ product }) {
 
       <h3 className="product-title">{product.title}</h3>
 
-     
-      <div className="product-actions"> 
+      <div className="product-actions">
         <Link to={`/detalle/${product.id}`} className="detail-button">
           Ver más detalles
         </Link>
-       
+
         <button
           onClick={handleDeleteProduct}
-          className="delete-button" 
+          className="delete-button"
           aria-label="Eliminar producto"
         >
           Eliminar

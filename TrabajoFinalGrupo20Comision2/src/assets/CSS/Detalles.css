@@ -1,0 +1,141 @@
+/* Styles for ProductDetail Page */
+.product-detail-container {
+  padding: 20px;
+  margin-top: 30px; /* Adjust margin as needed */
+  margin-bottom: 30px;
+}
+
+.back-button {
+  margin-bottom: 20px;
+  background-color: #6c757d;
+  border-color: #6c757d;
+  color: white;
+}
+
+.back-button:hover {
+  background-color: #5a6268;
+  border-color: #545b62;
+}
+
+.product-detail-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  background-color: #fff;
+}
+
+.loading-message,
+.error-message,
+.product-not-found-message {
+  text-align: center;
+  margin-top: 50px;
+  font-size: 1.2em;
+}
+
+.product-image-col {
+  padding: 20px;
+  display: flex; /* Ensure flex for centering */
+  justify-content: center;
+  align-items: center;
+  background-color: #f8f9fa; /* Light background for image area */
+  border-radius: 8px; /* Match card border radius */
+}
+
+.image-wrapper {
+  height: 300px; /* Fixed height for consistency */
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.product-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain; /* Ensures the image fits within bounds without cropping */
+  border-radius: 8px;
+}
+
+.product-details-body {
+  padding: 20px;
+}
+
+.product-title {
+  font-size: 2.2em;
+  color: #333;
+  margin-bottom: 15px;
+  text-align: center; /* Center the title on smaller screens */
+}
+
+@media (min-width: 768px) { /* Adjust for larger screens */
+  .product-title {
+    text-align: left;
+  }
+}
+
+.product-price {
+  font-weight: bold;
+  font-size: 1.8em;
+  color: #007bff;
+  margin-bottom: 0; /* Remove default paragraph margin */
+}
+
+.favorite-button {
+  padding: 0; /* Remove default button padding */
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #ffc107; /* Default color for star */
+}
+
+.favorite-icon-filled,
+.favorite-icon-outline {
+  font-size: 1.8em;
+  transition: transform 0.2s ease-in-out;
+}
+
+.favorite-icon-filled {
+  color: #ffc107; /* Gold for filled star */
+}
+
+.favorite-icon-outline {
+  color: #ced4da; /* Lighter color for outline star */
+}
+
+.favorite-button:hover .favorite-icon-outline {
+  color: #ffc107; /* Color on hover for outline star */
+  transform: scale(1.1);
+}
+
+.favorite-button:hover .favorite-icon-filled {
+  transform: scale(1.1);
+}
+
+
+.product-description {
+  font-size: 1.1em;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.product-meta p {
+  margin-bottom: 0; /* Remove default paragraph margin */
+  font-size: 1.05em;
+  color: #444;
+}
+
+.edit-product-button {
+  width: 100%;
+  margin-top: 20px;
+  padding: 12px 20px;
+  font-size: 1.1em;
+  transition: background-color 0.2s ease;
+}
+
+.edit-product-button:hover {
+  background-color: #218838;
+  border-color: #1e7e34;
+}

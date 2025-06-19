@@ -1,14 +1,122 @@
-/* Home.css */
-h1 {
-  font-family: 'Segoe UI', sans-serif;
-  letter-spacing: 1px;
+/* src/assets/CSS/Home.css */
+
+.home-page-container {
+  padding: 30px 20px; /* Más padding vertical, 20px de los lados */
+  margin-top: 20px;
+  margin-bottom: 50px; /* Margen inferior para espacio */
+  background-color: #f0f2f5; /* Un gris muy claro, casi blanco, para el fondo de la página */
+  border-radius: 12px; /* Bordes redondeados para el contenedor principal */
+  box-shadow: 0 6px 12px rgba(248, 239, 239, 0.08); /* Sombra suave para un efecto de "elevación" */
+  font-size: 0.95em; /* **Letra un poco más chica para el contenido general de la página de inicio** */
 }
 
-.card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+.home-title {
+  text-align: center;
+  margin-bottom: 50px; /* Espacio generoso debajo del título */
+  color: #2c3e50; /* Un azul oscuro/gris para el título principal */
+  font-family: 'Montserrat', sans-serif; /* Fuente moderna (asegúrate de importarla si no la tienes) */
+  font-size: 3em; /* Tamaño de título impactante */
+  font-weight: 800; /* Extra-negrita */
+  letter-spacing: 1.5px; /* Pequeño espaciado entre letras */
+  text-transform: uppercase; /* Convertir a mayúsculas */
+  /* Animación sutil */
+  animation: fadeInDown 1s ease-out;
 }
 
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+/* Animación para el título */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- Estilos para mensajes de estado (Cargando, Error, No hay productos) --- */
+
+.loading-message,
+.error-message,
+.no-products-message {
+  text-align: center;
+  margin-top: 40px;
+  font-size: 1.4em; /* Mensajes más grandes y legibles */
+  font-weight: 500;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.8s ease-out; /* Animación para los mensajes */
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.loading-message {
+  color: #007bff; /* Azul vibrante */
+  background-color: #e6f0ff; /* Fondo azul muy claro */
+  border: 1px solid #b3d9ff;
+}
+
+.error-message {
+  color: #dc3545; /* Rojo de peligro */
+  background-color: #ffe6e9; /* Fondo rojo muy claro */
+  border: 1px solid #ffb3bf;
+}
+
+.no-products-message {
+  color: #6c757d; /* Gris neutro */
+  background-color: #f0f3f6; /* Fondo gris claro */
+  border: 1px solid #d6dbdf;
+}
+
+/* --- Ajustes responsivos --- */
+@media (max-width: 992px) { /* Para tablets y pantallas medianas */
+  .home-title {
+    font-size: 2.5em;
+    margin-bottom: 40px;
+  }
+  .home-page-container {
+    padding: 25px 15px;
+  }
+}
+
+@media (max-width: 768px) { /* Para tablets pequeñas y móviles */
+  .home-title {
+    font-size: 2em;
+    margin-bottom: 30px;
+  }
+  .loading-message,
+  .error-message,
+  .no-products-message {
+    font-size: 1.2em;
+    padding: 15px;
+  }
+  .home-page-container {
+    margin-top: 15px;
+    margin-bottom: 30px;
+    border-radius: 8px;
+  }
+}
+
+@media (max-width: 576px) { /* Para móviles */
+  .home-title {
+    font-size: 1.6em;
+    margin-bottom: 25px;
+    letter-spacing: 1px;
+  }
+  .home-page-container {
+    padding: 15px 10px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }
+  .loading-message,
+  .error-message,
+  .no-products-message {
+    font-size: 1em;
+    padding: 12px;
+  }
 }
