@@ -1,6 +1,8 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/AuthContext';
+import { FaCube } from 'react-icons/fa'; 
 
+import '../CSS/Navbar.css'; 
 function Navbar() {
   const { isAuthenticated, user, logout } = useAuth();
   const navigate = useNavigate();
@@ -20,7 +22,8 @@ const handleLogout = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <div className="container-fluid">
-        <Link className="navbar-brand" to="/">Mi App de Productos</Link>
+        <Link className="navbar-brand d-flex align-items-center" to="/"> <FaCube className="me-2" />
+        Mi App de Productos</Link>
         <button
           className="navbar-toggler"
           type="button"
