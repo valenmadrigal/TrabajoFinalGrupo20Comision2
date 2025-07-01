@@ -26,10 +26,14 @@ export const AuthProvider = ({ children }) => {
     // Simulación de una llamada a una API
     return new Promise((resolve, reject) => {
       setTimeout(() => { // Simula un retraso de red
-        if (username === 'admin' && password === '1234') {
-          const newUser = { id: 1, username: 'test', email: 'test@example.com' };
+          if (username === 'admin' && password === '1234') {
+          const newUser = { id: 1, username: 'admin', role: 'admin', email: 'admin@example.com' };
           setUser(newUser);
-          // Guarda el usuario en localStorage
+          localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(newUser));
+          resolve(newUser);
+        } else if (username === 'cliente' && password === '4321') {
+          const newUser = { id: 2, username: 'cliente', role: 'cliente', email: 'cliente@example.com' };
+          setUser(newUser);
           localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(newUser));
           resolve(newUser);
         } else {
@@ -49,12 +53,15 @@ export const AuthProvider = ({ children }) => {
   };
 
   // El valor que se proveerá a todos los componentes que consuman este contexto
-  const authContextValue = {
-    user,      // Información del usuario autenticado (o null si no hay)
-    loading,   // Indica si una operación de login/logout está en curso
-    login,     // Función para iniciar sesión
-    logout,    // Función para cerrar sesión
-    isAuthenticated: !!user, // Booleano para saber si hay un usuario autenticado
+    const authContextValue = {
+    user,
+    loading,
+    login,
+    logout,
+    isAuthenticated: !!user,
+        isAdmin: user && user.role === 'admin',
+    isCliente: user && user.role === 'cliente',
+    isUnauthenticated: !user, // Conveniencia para la legibilidad
   };
 
   return (
