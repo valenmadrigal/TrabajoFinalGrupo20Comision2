@@ -25,7 +25,7 @@ function Navbar() {
       <div className="container-fluid">
         <Link className="navbar-brand d-flex align-items-center" to="/">
           <FaCube className="me-2" />
-          Mi App de Productos
+          NEW PRODUCTOS JUJUY
         </Link>
         <button
           className="navbar-toggler"
@@ -44,10 +44,7 @@ function Navbar() {
             <li className="nav-item">
               <Link className="nav-link" to="/products">Productos</Link>
             </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/Acerca">Acerca de</Link>
-            </li>
-
+    
             {/* Solo visible si está autenticado (cliente o admin) */}
             {isAuthenticated && (
               <li className="nav-item">
@@ -61,7 +58,10 @@ function Navbar() {
                 <Link className="nav-link" to="/crear">Crear Producto</Link>
               </li>
             )}
-            {/* El enlace de edición no suele estar en el navbar principal, sino en el detalle del producto o una tabla de gestión */}
+                    <li className="nav-item">
+              <Link className="nav-link" to="/Acerca">Acerca de</Link>
+            </li>
+
           </ul>
           <div className="d-flex">
             {/* Mensaje de bienvenida y botón de cerrar sesión */}

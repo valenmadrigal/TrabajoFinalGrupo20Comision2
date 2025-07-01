@@ -8,7 +8,7 @@ const integrantes = [
       rol: "Diseño",
       email: "talia@email.com",
       frase: "Siempre aprendiendo algo nuevo.",
-      github:"..",
+      github:"https://github.com/TaliaEspejo",
       img: TaliaImg
     },
     {
@@ -24,7 +24,7 @@ const integrantes = [
       rol: "Programador",
       email: "vale@email.com",
       frase: "Si puedes imaginarlo, puedes programarlo.",
-      github:"..",
+      github:"https://github.com/valenmadrigal",
       img: ValeImg
     },
     {
@@ -32,7 +32,7 @@ const integrantes = [
       rol: "Programador",
       email: "francinoe3@email.com",
       frase: "El detalle hace la diferencia.",
-      github: "..",
+      github: "https://github.com/francozxy",
       img: NoeImg
     }
 ];export default integrantes;
