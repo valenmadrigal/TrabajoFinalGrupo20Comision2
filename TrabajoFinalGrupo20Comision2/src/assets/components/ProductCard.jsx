@@ -1,12 +1,14 @@
 import { Link } from 'react-router-dom';
 import { useFavorites } from '../../hooks/FavoritesContext.js';
 import { useProducts } from '../../hooks/ProductsContext.js';
+import { useAuth } from '../../hooks/AuthContext.js'; // <-- ¡Añade o verifica esta línea!
+
 import '../CSS/ProductCard.css'; // Asegurate de que esta ruta sea correcta
 
 function ProductCard({ product }) {
   const { favoriteIds, toggleFavorite } = useFavorites();
   const { deleteProduct } = useProducts();
-
+  const { isAuthenticated, isAdmin } = useAuth(); // Obtén el estado de autenticación y si es admin
   const isFavorite = favoriteIds.includes(product.id);
 
   const handleToggleFavorite = (e) => {
@@ -37,6 +39,7 @@ function ProductCard({ product }) {
       />
 
       {/* Botón de Favorito */}
+       {isAuthenticated && (
       <button
         onClick={handleToggleFavorite}
         className={`favorite-button ${isFavorite ? 'favorite-true' : 'favorite-false'}`}
@@ -44,14 +47,14 @@ function ProductCard({ product }) {
       >
         {isFavorite ? '★' : '☆'}
       </button>
-
+ )}
       <h3 className="product-title">{product.title}</h3>
 
       <div className="product-actions">
         <Link to={`/detalle/${product.id}`} className="detail-button">
           Ver más detalles
         </Link>
-
+       {isAdmin && (
         <button
           onClick={handleDeleteProduct}
           className="delete-button"
@@ -59,6 +62,7 @@ function ProductCard({ product }) {
         >
           Eliminar
         </button>
+         )}
       </div>
     </div>
   );
